@@ -8,10 +8,12 @@ class NewTasksScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.separated(
-        itemBuilder: (context,index)=>buildTaskItem(tasks[index]),
-        separatorBuilder: (context,index)=>Divider(height: 1.0,),
-        itemCount: tasks.length
-    );
+    return Container();
+
+    //   ListView.separated(
+    //     itemBuilder: (context,index)=>buildTaskItem(tasks[index]),
+    //     separatorBuilder: (context,index)=>Divider(height: 1.0,),
+    //     itemCount: tasks.length
+    // );
   }
 }
