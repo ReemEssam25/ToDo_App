@@ -86,6 +86,7 @@ class _HomeLayoutState extends State<HomeLayout> {
 
 
                       timeController.clear();
+
                       dateController.clear();
                       titleController.clear();
                 });
