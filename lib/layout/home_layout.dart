@@ -29,7 +29,13 @@ class HomeLayout extends StatelessWidget {
     return BlocProvider(
       create: (context)=>AppCubit()..createDatabase(),
       child: BlocConsumer<AppCubit, AppStates>(
-        listener: (context, state){},
+        listener: (context, state){
+          if(state is AppInsertDatabaseState)
+            {
+              Navigator.pop(context);
+            }
+
+        },
         builder: (context, state) {
           AppCubit cubit = AppCubit.get(context);
           return Scaffold(
@@ -39,7 +45,7 @@ class HomeLayout extends StatelessWidget {
             ),
 
             body:ConditionalBuilder(
-              condition: true,
+              condition: state is! AppGetDatabaseLoadingState,
               builder: (context)=>cubit.currentScreen[cubit.currentIndex],
               fallback: (context) => Center(child: CircularProgressIndicator()),
             ),
@@ -49,29 +55,15 @@ class HomeLayout extends StatelessWidget {
                 if (cubit.isBottomSheetShown){
                   if (formKey.currentState.validate())
                   {
-                    // insertToDatabase(
-                    //     title: titleController.text,
-                    //     date: dateController.text,
-                    //     time: timeController.text)
-                    //     .then((value) {
-                    //
-                    //
-                    //   getDataFromDatabase(database).then((value) {
-                    //     Navigator.pop(context);
-                    //     // setState(() {
-                    //     //   isBottomSheetShown = false;
-                    //     //   fabIcon = Icons.edit;
-                    //     //   tasks = value;
-                    //     //   print (tasks);
-                    //     // });
-                    //   });
-                    //
-                    //
-                    //   timeController.clear();
-                    //
-                    //   dateController.clear();
-                    //   titleController.clear();
-                    // });
+                    cubit.insertToDatabase(
+                        title: titleController.text,
+                        date: dateController.text,
+                        time: timeController.text);
+
+                    timeController.clear();
+                    dateController.clear();
+                    titleController.clear();
+
                   }
                 }
                 else {
@@ -152,6 +144,9 @@ class HomeLayout extends StatelessWidget {
                     elevation: 20.0,
                   ).closed.then((value) {
                     cubit.changeBottomSheetState(isShown: false, icon: Icons.edit);
+                    timeController.clear();
+                    dateController.clear();
+                    titleController.clear();
                   });
                   cubit.changeBottomSheetState(isShown: true, icon: Icons.add);
                 }
